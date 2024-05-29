@@ -1,8 +1,12 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
 import store from '~/store'
 import router from '~/router'
 import App from '~/components/App'
-import Snackbar from 'vuejs-snackbar'
+// import Snackbar from 'vuejs-snackbar'
+import { SnackbarService } from "vue3-snackbar";
+import "vue3-snackbar/styles";
+
 
 // import LogRocket from 'logrocket'
 // import VueInputDropdown from 'vue-input-dropdown'
@@ -29,7 +33,6 @@ import '~/components'
 
 // LogRocket.init('i0tmx9/phive')
 
-import VueMatchMedia from '@webqam/vue-match-media'
 const breakpoints = {
   xs: '360px',
   sm: '410px',
@@ -40,6 +43,10 @@ const breakpoints = {
 }
 
 const VueScrollTo = require('vue-scrollto')
+
+const Vue = createApp(App)
+Vue.use(store)
+Vue.use(router)
 
 Vue.use(VueScrollTo, {
   easing: 'ease-in-out',
@@ -52,18 +59,27 @@ Vue.use(VueSocialSharing)
 Vue.use(Vue2TouchEvents)
 Vue.use(VueContentPlaceholders)
 Vue.use(VueExpandableImage)
-Vue.use(VueMatchMedia, { breakpoints })
 Vue.use(vueDebounce)
-// Vue.use(VueInputDropdown)
 
-Vue.component('snackbar', Snackbar)
+Vue.config.globalProperties.$matchMedia = {
+  isXs: useMediaQuery(`(min-width: ${breakpoints.xs})`),
+  isSm: useMediaQuery(`(min-width: ${breakpoints.sm})`),
+  isMd: useMediaQuery(`(min-width: ${breakpoints.md})`),
+  isLg: useMediaQuery(`(min-width: ${breakpoints.lg})`),
+  isXl: useMediaQuery(`(min-width: ${breakpoints.xl})`),
+  isXxl: useMediaQuery(`(min-width: ${breakpoints.xxl})`)
+}
+
+Vue.component('snackbar', SnackbarService)
+// Vue.use(SnackbarService);
 Vue.component('paginate', Paginate)
 
-Vue.config.productionTip = true
 
-/* eslint-disable no-new */
-new Vue({
-  store,
-  router,
-  ...App
-})
+Vue.config.compilerOptions = {
+  compatConfig: {
+    MODE: 2,
+    RENDER_FUNCTION: false,
+  },
+};
+
+Vue.mount('#app')

@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, nextTick }  from "vue";
 import store from "~/store";
 import Meta from "vue-meta";
 import { createRouter, createWebHistory } from "vue-router";
@@ -7,7 +7,7 @@ import routes from "./routes";
 const app = createApp();
 
 app.use(store);
-app.use(Meta);
+// app.use(Meta);
 
 // The middleware for every page of the application.
 const globalMiddleware = ["check-auth"];
@@ -93,7 +93,7 @@ async function beforeEach(to, from, next) {
  * @param {Function} next
  */
 async function afterEach(to, from, next) {
-  await router.app.$nextTick();
+  await nextTick();
 
   // router.app.$loading.finish()
 }

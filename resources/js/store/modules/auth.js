@@ -153,3 +153,10 @@ export const actions = {
     commit(types.LOGOUT)
   }
 }
+export default {
+  namespaced: true,
+  state,
+  getters,
+  mutations,
+  actions
+};

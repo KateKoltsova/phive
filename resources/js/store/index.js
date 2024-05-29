@@ -1,23 +1,28 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
+import {createStore} from 'vuex'
+import notification from './modules/notification'
 
 // Load store modules dynamically.
 const requireContext = require.context('./modules', false, /.*\.js$/)
 
 const modules = requireContext.keys()
-  .map(file =>
-    [file.replace(/(^.\/)|(\.js$)/g, ''), requireContext(file)]
-  )
-  .reduce((modules, [name, module]) => {
-    if (module.namespaced === undefined) {
-      module.namespaced = true
+  .reduce((modules, file) => {
+    const moduleName = file.replace(/(^.\/)|(\.js$)/g, '')
+    const moduleConfig = requireContext(file)
+
+    if (moduleConfig.default) {
+      modules[moduleName] = {
+        ...moduleConfig.default,
+        namespaced: moduleConfig.default.namespaced !== undefined ? moduleConfig.default.namespaced : true,
+      };
+    } else {
+      console.error(`Module ${moduleName} does not have a default export.`);
     }
 
-    return { ...modules, [name]: module }
+    return modules
   }, {})
 
-export default new Vuex.Store({
+const store = createStore({
   modules
-})
+});
+
+export default store;

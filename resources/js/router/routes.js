@@ -103,5 +103,5 @@ export default [
 
   { path: '/:url/404', name: '404', meta: { title: 'Error' }, component: page('errors/404.vue') },
 
-  { path: '*', meta: { title: 'Error' }, component: page('errors/404.vue') }
+  { path: '/:pathMatch(.*)*', meta: { title: 'Error' }, component: page('errors/404.vue') }
 ]

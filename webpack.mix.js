@@ -2,6 +2,7 @@ const { join, resolve } = require('path')
 const { copySync, removeSync } = require('fs-extra')
 const mix = require('laravel-mix')
 const findRemoveSync = require('find-remove')
+const webpack = require('webpack');
 require('laravel-mix-versionhash')
 require('laravel-mix-workbox')
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -154,7 +155,11 @@ if (mix.inProduction()) {
 
 mix.webpackConfig({
   plugins: [
-    // new BundleAnalyzerPlugin()
+    new webpack.DefinePlugin({
+      '__VUE_OPTIONS_API__': JSON.stringify(true),
+      '__VUE_PROD_DEVTOOLS__': JSON.stringify(false),
+      '__VUE_PROD_HYDRATION_MISMATCH_DETAILS__': JSON.stringify(false),
+    })
   ],
   resolve: {
     extensions: ['.js', '.json', '.vue'],

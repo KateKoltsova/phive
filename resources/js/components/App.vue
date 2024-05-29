@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <loading ref="loading" /> -->
-    <div v-if="!$matchMedia.xl">
+    <div v-if="!matchMedia.xl">
       <snackbar ref="snackbar" base-size="10rem" position="bottom" :hold-time="5000" :multiple="false" />
     </div>
     <div v-else>
@@ -16,6 +16,9 @@
 <script>
 // import Loading from './Loading'
 import { loadProgressBar } from 'axios-progress-bar'
+import { defineComponent } from 'vue';
+import { useMediaQuery } from '@vueuse/core';
+import SnackbarService from 'vue3-snackbar';
 
 loadProgressBar()
 
@@ -54,13 +57,36 @@ export default {
   },
 
   methods: {
-    setLayout (layout) {
-      if (!layout || !layouts[layout]) {
-        layout = this.defaultLayout
+    setLayout(layout) {
+      if (!layout || !this.layouts[layout]) {
+        layout = this.defaultLayout;
       }
-
-      this.layout = layouts[layout]
+      this.layout = this.layouts[layout];
     }
-  }
-}
+  },
+
+  setup() {
+    const breakpoints = {
+      xs: '360px',
+      sm: '410px',
+      md: '768px',
+      lg: '992px',
+      xl: '1280px',
+      xxl: '1366px'
+    };
+
+    const isXl = useMediaQuery(`(min-width: ${breakpoints.xl})`);
+
+    return {
+      matchMedia: {
+        xl: isXl
+      }
+    };
+  },
+
+  components: {
+    snackbar: SnackbarService
+  },
+
+};
 </script>

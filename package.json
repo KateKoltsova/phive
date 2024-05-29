@@ -10,6 +10,7 @@
   "dependencies": {
     "@swayable/vue-snarkdown": "^1.1.1",
     "@vue/compat": "^3.1.0",
+    "@vueuse/core": "^10.10.0",
     "@webqam/vue-match-media": "^2.0.1",
     "axios": "^0.21.1",
     "axios-progress-bar": "^1.2.0",
@@ -29,7 +30,7 @@
     "vue-social-sharing": "^4.0.0-alpha4",
     "vue2-touch-events": "^2.3.2",
     "vuejs-paginate": "^2.1.0",
-    "vuejs-snackbar": "^4.0.1",
+    "vue3-snackbar": "^2.2.2",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
